@@ -1,0 +1,10 @@
+﻿@page "/"
+@using Contracts
+@inject ILoggerManager Logger
+
+@code {
+    protected override void OnInitialized()
+    {
+        Logger.LogInfo("App started");
+    }
+}
