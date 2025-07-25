@@ -2,11 +2,11 @@
 <AppInstaller
 	xmlns="http://schemas.microsoft.com/appx/appinstaller/2018"
 	Version="1.0.0.0"
-	Uri="https://github.com/parko65/RoadRunner/releases/latest/download/ABSHybridX.appinstaller">
+	Uri="https://github.com/parko65/RoadRunner/releases/latest/download/RoadRunner.appinstaller">
 	<MainPackage
 		Name="Hesler.Automation.RoadRunner"
 		Publisher="CN=David Parkes, O=Hesler Automation"
-		Version="1.0.1.0"
+		Version="1.0.2.0"
 		ProcessorArchitecture="x64"
 		Uri="https://github.com/parko65/RoadRunner/releases/latest/download/AutoUpdate.msix"/>
 	<UpdateSettings>
