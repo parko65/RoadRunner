@@ -9,5 +9,8 @@ public class MappingProfile : Profile
     {
         CreateMap<Recipe, RecipeDto>();
         CreateMap<RecipeForCreationDto, Recipe>();
+
+        CreateMap<Aggregate, AggregateDto>();
+        CreateMap<AggregateForCreationDto, Aggregate>();
     }
 }

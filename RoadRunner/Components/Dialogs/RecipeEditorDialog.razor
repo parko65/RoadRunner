@@ -1,4 +1,5 @@
-﻿@using Shared.DataTransferObjects
+﻿@using RoadRunner.Models
+@using Shared.DataTransferObjects
 @using System.ComponentModel.DataAnnotations
 @using static RoadRunner.Components.Dialogs.RecipeEditorDialog
 @implements IDialogContentComponent<RecipeForCreation>
@@ -17,16 +18,39 @@
 <FluentDialogBody>
 
     <EditForm EditContext="@_editContext" FormName="simple_register">
-        <DataAnnotationsValidator />        
+        <DataAnnotationsValidator />
 
-        <FluentTextField Name="register_name"
+        <FluentTextField Name="recipe_name"
                          @bind-Value="@Content.Name"
                          Label="Name"
                          Required />
-        <FluentTextField Name="register_age"
-                           @bind-Value="@Content.Title"
-                           Label="Age"
-                           Required />
+        <FluentTextField Name="recipe_title"
+                         @bind-Value="@Content.Title"
+                         Label="Title"
+                         Required />
+
+        <FluentTextField Name="recipe_version"
+                         @bind-Value="@Content.VersionNumber"
+                         Label="Version"
+                         Required />
+
+        <FluentCheckbox Name="recipe_valid"
+                        @bind-Value="@Content.Valid"
+                        Label="Valid" />
+
+        <FluentTextField Name="recipe_batchsize"
+                         @bind-Value="@Content.BatchSize"
+                         Label="Batch Size"
+                         Required />
+
+        <FluentCheckbox Name="recipe_fixedsize"
+                        @bind-Value="@Content.FixedBatchSize"
+                        Label="Fixed" />
+
+        <FluentTextField Name="recipe_mixtime"
+                         @bind-Value="@Content.MixTime"
+                         Label="Mix Time"
+                         Required />
 
         <div style="color: var(--error);">
             <FluentValidationSummary />
@@ -72,25 +96,5 @@
     private async Task CancelAsync()
     {
         await Dialog.CancelAsync();
-    }
-
-    public class RecipeForCreation
-    {
-        [Required(ErrorMessage = "Recipe name is a required field.")]
-        [MaxLength(20, ErrorMessage = "Name must be less than 20 characters")]
-        public string Name { get; set; } = string.Empty;
-
-        [Required(ErrorMessage = "Recipe title is a required field.")]
-        [MaxLength(30, ErrorMessage = "Name must be less than 20 characters")]
-        public string Title { get; set; } = string.Empty;
-
-        public int VersionNumber { get; set; }
-        public bool Valid { get; set; }
-        public int BatchSize { get; set; }
-        public bool FixedBatchSize { get; set; }
-        public int MixTime { get; set; }
-        public int MixTemperature { get; set; }
-        public int UpperTemperatureDeviation { get; set; }
-        public int LowerTemperatureDeviation { get; set; }
     }
 }

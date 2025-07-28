@@ -1,4 +1,5 @@
 ﻿using Contracts;
+using Entities.Configuration;
 using LoggerService;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -23,6 +24,34 @@ public static class ServiceExtensions
             .Build();
 
         builder.Configuration.AddConfiguration(config);
+    }
+
+    public static void ConfigurePlcSettings(this MauiAppBuilder builder)
+    {
+        var configuration = new ConfigurationBuilder()
+            .AddJsonFile(@"C:\Applications\RoadRunner\plcsettings.json", optional: false, reloadOnChange: true)
+            .Build();
+
+        // Add the configuration to the builder's configuration
+        builder.Configuration.AddConfiguration(configuration);
+
+        // Register the PLCConfiguration for dependency injection
+        builder.Services.Configure<PLCConfiguration>(
+            configuration.GetSection("PLCConfiguration"));        
+    }
+
+    public static void ConfigurePlantSettings(this MauiAppBuilder builder)
+    {
+        var configuration = new ConfigurationBuilder()
+            .AddJsonFile(@"C:\Applications\RoadRunner\plantsettings.json", optional: false, reloadOnChange: true)
+            .Build();
+
+        // Add the configuration to the builder's configuration
+        builder.Configuration.AddConfiguration(configuration);
+
+        // Register the PlantConfiguration for dependency injection
+        builder.Services.Configure<PlantConfiguration>(
+            configuration.GetSection("PlantConfiguration"));
     }
 
     public static void ConfigureRepositoryManager(this IServiceCollection services) =>

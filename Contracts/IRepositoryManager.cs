@@ -1,7 +1,8 @@
 ﻿namespace Contracts;
 public interface IRepositoryManager
 {
-    IRecipeRepository RecipeRepository { get; }
-    IJobRepository JobRepository { get; }
+    IRecipeRepository Recipe { get; }
+    IJobRepository Job { get; }
+    IAggregateRepository Aggregate { get; }
     Task SaveAsync();
 }

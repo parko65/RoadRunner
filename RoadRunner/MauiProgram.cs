@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Hosting;
+﻿using libplctag.NativeImport;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Hosting.Internal;
 using Microsoft.Extensions.Logging;
 using Microsoft.FluentUI.AspNetCore.Components;
@@ -27,6 +28,9 @@ namespace RoadRunner
             builder.Services.AddFluentUIComponents();
 
             builder.SetupConfiguration();
+            builder.ConfigurePlcSettings();
+            builder.ConfigurePlantSettings();
+
             builder.Services.ConfigureLoggerService();
             builder.Services.ConfigureRepositoryManager();
             builder.Services.ConfigureServiceManager();
@@ -34,6 +38,7 @@ namespace RoadRunner
 
             builder.Services.AddAutoMapper(typeof(MauiProgram));
 
+            plctag.ForceExtractLibrary = false; // Do not extract the library, use the one in the native import
 
 #if DEBUG
             var env = "Development";

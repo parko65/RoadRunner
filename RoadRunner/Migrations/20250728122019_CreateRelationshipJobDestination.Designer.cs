@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Repository;
 
@@ -11,9 +12,11 @@ using Repository;
 namespace RoadRunner.Migrations
 {
     [DbContext(typeof(RepositoryContext))]
-    partial class RepositoryContextModelSnapshot : ModelSnapshot
+    [Migration("20250728122019_CreateRelationshipJobDestination")]
+    partial class CreateRelationshipJobDestination
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,35 +24,6 @@ namespace RoadRunner.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("Entities.Models.Aggregate", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("AggregateId");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int?>("HotBinId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("MaterialNumber")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(60)
-                        .HasColumnType("nvarchar(60)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("HotBinId")
-                        .IsUnique()
-                        .HasFilter("[HotBinId] IS NOT NULL");
-
-                    b.ToTable("Aggregates");
-                });
 
             modelBuilder.Entity("Entities.Models.Destination", b =>
                 {
@@ -70,23 +44,6 @@ namespace RoadRunner.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Destination");
-                });
-
-            modelBuilder.Entity("Entities.Models.HotBin", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("HotBinId");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("HotBins");
                 });
 
             modelBuilder.Entity("Entities.Models.Job", b =>
@@ -168,33 +125,6 @@ namespace RoadRunner.Migrations
                     b.ToTable("Recipes");
                 });
 
-            modelBuilder.Entity("Entities.Models.RecipeHotBin", b =>
-                {
-                    b.Property<int>("RecipeId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("HotBinId")
-                        .HasColumnType("int");
-
-                    b.Property<double>("Take")
-                        .HasColumnType("float");
-
-                    b.HasKey("RecipeId", "HotBinId");
-
-                    b.HasIndex("HotBinId");
-
-                    b.ToTable("RecipeHotBins");
-                });
-
-            modelBuilder.Entity("Entities.Models.Aggregate", b =>
-                {
-                    b.HasOne("Entities.Models.HotBin", "HotBin")
-                        .WithOne("Aggregate")
-                        .HasForeignKey("Entities.Models.Aggregate", "HotBinId");
-
-                    b.Navigation("HotBin");
-                });
-
             modelBuilder.Entity("Entities.Models.Job", b =>
                 {
                     b.HasOne("Entities.Models.Destination", "Destination")
@@ -214,42 +144,14 @@ namespace RoadRunner.Migrations
                     b.Navigation("Recipe");
                 });
 
-            modelBuilder.Entity("Entities.Models.RecipeHotBin", b =>
-                {
-                    b.HasOne("Entities.Models.HotBin", "HotBin")
-                        .WithMany("RecipeHotBins")
-                        .HasForeignKey("HotBinId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Entities.Models.Recipe", "Recipe")
-                        .WithMany("RecipeHotBins")
-                        .HasForeignKey("RecipeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("HotBin");
-
-                    b.Navigation("Recipe");
-                });
-
             modelBuilder.Entity("Entities.Models.Destination", b =>
                 {
                     b.Navigation("Jobs");
                 });
 
-            modelBuilder.Entity("Entities.Models.HotBin", b =>
-                {
-                    b.Navigation("Aggregate");
-
-                    b.Navigation("RecipeHotBins");
-                });
-
             modelBuilder.Entity("Entities.Models.Recipe", b =>
                 {
                     b.Navigation("Jobs");
-
-                    b.Navigation("RecipeHotBins");
                 });
 #pragma warning restore 612, 618
         }

@@ -6,12 +6,4 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="libplctag" Version="1.5.2" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Enums\Enums.csproj" />
-  </ItemGroup>
-
 </Project>

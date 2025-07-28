@@ -33,4 +33,5 @@ public class Recipe
     public int LowerTemperatureDeviation { get; set; }
 
     public ICollection<Job>? Jobs { get; set; }
+    public ICollection<RecipeHotBin>? RecipeHotBins { get; set; }
 }

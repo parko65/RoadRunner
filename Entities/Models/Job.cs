@@ -15,4 +15,8 @@ public class Job
     [ForeignKey(nameof(Recipe))]
     public int RecipeId { get; set; }
     public Recipe? Recipe { get; set; }
+
+    [ForeignKey(nameof(Destination))]
+    public int DestinationId { get; set; }
+    public Destination? Destination { get; set; }
 }

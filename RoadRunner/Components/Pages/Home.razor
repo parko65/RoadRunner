@@ -1,12 +1,15 @@
 ﻿@page "/"
+@using Entities.Configuration
+@using Microsoft.Extensions.Options
 @using RoadRunner.Components.Dialogs
 @using RoadRunner.Components.Tabs
+@using System.Diagnostics
+@using libplctag
+@using libplctag.DataTypes
 
 <FluentTabs @bind-ActiveTabId="activeId" OnTabChange="HandleOnTabChange" Size="TabSize.Large">
     <OverviewTabs />
-    <FluentTab Label="Records" Id="tab-2">
-        
-    </FluentTab>
+    <RecordsTabs />
     <FluentTab Label="Production" Id="tab-3" DeferredLoading="@DeferredLoading">
         @{
             if (DeferredLoading)
@@ -34,25 +37,5 @@
         }
         Tab five content. This is for testing.
     </FluentTab>
-    <FluentTab Label="Configuration" Id="tab-6" DeferredLoading="@DeferredLoading">
-        @{
-            if (DeferredLoading)
-            {
-                Thread.Sleep(1000);
-            }
-        }
-        Tab six content. This is for testing.
-    </FluentTab>
+    <ConfigurationTabs />
 </FluentTabs>
-
-@code {
-    private bool DeferredLoading = false;
-    private string? activeId = "tab-3";
-
-    FluentTab? changedto;    
-
-    private void HandleOnTabChange(FluentTab tab)
-    {
-        changedto = tab;
-    }    
-}

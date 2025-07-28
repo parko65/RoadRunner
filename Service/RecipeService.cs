@@ -14,7 +14,7 @@ internal sealed class RecipeService(IRepositoryManager repository, ILoggerManage
 
     public async Task<IEnumerable<RecipeDto>> GetRecipesAsync(bool trackChanges)
     {
-        var recipes = await _repository.RecipeRepository.GetRecipesAsync(trackChanges);
+        var recipes = await _repository.Recipe.GetRecipesAsync(trackChanges);
 
         var recipeDtos = _mapper.Map<IEnumerable<RecipeDto>>(recipes);
 
@@ -23,7 +23,7 @@ internal sealed class RecipeService(IRepositoryManager repository, ILoggerManage
 
     public async Task<RecipeDto> GetRecipeAsync(int id, bool trackChanges)
     {
-        var recipe = await _repository.RecipeRepository.GetRecipeAsync(id, trackChanges) ?? throw new RecipeNotFoundException(id);
+        var recipe = await _repository.Recipe.GetRecipeAsync(id, trackChanges) ?? throw new RecipeNotFoundException(id);
 
         var recipeDto = _mapper.Map<RecipeDto>(recipe);
 
@@ -36,7 +36,7 @@ internal sealed class RecipeService(IRepositoryManager repository, ILoggerManage
 
         recipeEntity.Created = DateTime.Now; // Set the Created property to the current time
 
-        _repository.RecipeRepository.CreateRecipe(recipeEntity);
+        _repository.Recipe.CreateRecipe(recipeEntity);
         await _repository.SaveAsync();
 
         var recipeToReturn = _mapper.Map<RecipeDto>(recipeEntity);
