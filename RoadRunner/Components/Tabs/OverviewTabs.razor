@@ -1,0 +1,45 @@
+﻿@using RoadRunner.Components.Dialogs
+@using Service.Contracts
+@using Shared.DataTransferObjects
+<FluentTab Label="Overview" Id="tab-1">
+    <FluentStack>
+        <FluentButton Class="tab-button" IconStart="@(new Icons.Regular.Size16.DocumentEdit())" Appearance="Appearance.Lightweight" OnClick="ShowRecipeEditorAsync">Recipe Editor</FluentButton>
+        <FluentButton Class="tab-button" IconStart="@(new Icons.Regular.Size16.ArrowSwap())" Appearance="Appearance.Lightweight">Change Tonnage</FluentButton>
+        <FluentButton Class="tab-button" IconStart="@(new Icons.Regular.Size16.ArrowUp())" Appearance="Appearance.Lightweight">Job Up</FluentButton>
+        <FluentButton Class="tab-button" IconStart="@(new Icons.Regular.Size16.ArrowDown())" Appearance="Appearance.Lightweight">Job Down</FluentButton>
+    </FluentStack>
+</FluentTab>
+
+@code {
+    [Inject]
+    public IServiceManager Service { get; set; } = default!;
+
+    RecipeEditorDialog.RecipeForCreation DialogData { get; set; } = new() { Name = "120A103Z", Title = "A nice recipe" };
+
+    [Inject]
+    public IDialogService DialogService { get; set; } = default!;
+
+    private async Task ShowRecipeEditorAsync()
+    {
+        var dialog = await DialogService.ShowDialogAsync(DialogHelper.From<RecipeEditorDialog>(), DialogData, new DialogParameters()
+        {
+            Height = "400px",
+            Width = "800px",
+            Title = $"Updating the {DialogData.Name} sheet",
+            PreventDismissOnOverlayClick = true,
+            PreventScroll = true
+        });
+
+        var result = await dialog.Result;
+        if (!result.Cancelled && result.Data != null)
+        {
+            DialogData = (RecipeEditorDialog.RecipeForCreation)result.Data;
+
+            var recipeForCreation = new RecipeForCreationDto(DialogData.Name, DialogData.Title, DialogData.VersionNumber, DialogData.Valid,
+            DialogData.BatchSize, DialogData.FixedBatchSize, DialogData.MixTime, DialogData.MixTemperature, DialogData.UpperTemperatureDeviation,
+            DialogData.LowerTemperatureDeviation);
+
+            var createdRecipe = await Service.RecipeService.CreateRecipeAsync(recipeForCreation);
+        }
+    }
+}

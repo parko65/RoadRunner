@@ -3,34 +3,15 @@
 @inherits LayoutComponentBase
 @inject IHostEnvironment Host
 
-<FluentDesignTheme @bind-Mode="@Mode"
-                   @bind-OfficeColor="@OfficeColor"
+<FluentDesignTheme Mode="@Mode"
+                   OfficeColor="OfficeColor.PowerPoint"
                    StorageName="theme" />
 
 <FluentLayout>
     <FluentHeader>
         Road Runner
-        <div style="margin-left: auto">
-            <FluentSelect Width="100px"
-                          Items="@(Enum.GetValues<DesignThemeModes>())"
-                          @bind-SelectedOption="@Mode" />
-        </div>       
-
-        <div style="margin-left: 1.5rem;">
-            <FluentSelect Items="@(Enum.GetValues<OfficeColor>().Select(i => (OfficeColor?)i))"
-                          Height="200px"
-                          Width="150px"
-                          @bind-SelectedOption="@OfficeColor">
-                <OptionTemplate>
-                    <FluentStack>
-                        <FluentIcon Value="@(new Icons.Filled.Size20.RectangleLandscape())"
-                                    Color="Color.Custom"
-                                    CustomColor="@(@context.ToAttributeValue() != "default" ? context.ToAttributeValue() : "#036ac4" )" />
-                        <FluentLabel>@context</FluentLabel>
-                    </FluentStack>
-                </OptionTemplate>
-            </FluentSelect>
-        </div>
+        <FluentSpacer />
+        <FluentButton Appearance="Appearance.Accent" IconStart="@(new Icons.Regular.Size20.DarkTheme())" OnClick="SwitchTheme" Title="Theme" />
     </FluentHeader>
     <FluentStack Class="main" Orientation="Orientation.Horizontal" Width="100%">        
         <FluentBodyContent Class="body-content">            
@@ -49,9 +30,7 @@
                     </ErrorContent>
                 </ErrorBoundary>                
             </div>
-            <FluentToastProvider MaxToastCount="5" Position="ToastPosition.BottomRight" Timeout="5000" />
-            <FluentDialogProvider />
-            <FluentTooltipProvider />
+            
         </FluentBodyContent>
     </FluentStack>
     <FluentFooter>
@@ -63,6 +42,10 @@
     </FluentFooter>
 </FluentLayout>
 
+<FluentToastProvider MaxToastCount="5" Position="ToastPosition.BottomRight" Timeout="5000" />
+<FluentDialogProvider />
+<FluentTooltipProvider />
+
 @code {
     private ErrorBoundary? _errorBoundary;
 
@@ -71,9 +54,12 @@
     public const string MESSAGES_DIALOG = "DIALOG";
     public const string MESSAGES_CARD = "CARD";
 
-    public DesignThemeModes Mode { get; set; }
+    public DesignThemeModes Mode = DesignThemeModes.System;
 
-    public OfficeColor? OfficeColor { get; set; }
+    private void SwitchTheme()
+    {
+        Mode = Mode != DesignThemeModes.Dark ? DesignThemeModes.Dark : DesignThemeModes.Light;
+    }
 
     protected override void OnParametersSet()
     {

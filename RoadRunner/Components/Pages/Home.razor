@@ -1,10 +1,58 @@
 ﻿@page "/"
-@using Contracts
-@inject ILoggerManager Logger
+@using RoadRunner.Components.Dialogs
+@using RoadRunner.Components.Tabs
+
+<FluentTabs @bind-ActiveTabId="activeId" OnTabChange="HandleOnTabChange" Size="TabSize.Large">
+    <OverviewTabs />
+    <FluentTab Label="Records" Id="tab-2">
+        
+    </FluentTab>
+    <FluentTab Label="Production" Id="tab-3" DeferredLoading="@DeferredLoading">
+        @{
+            if (DeferredLoading)
+            {
+                Thread.Sleep(1000);
+            }
+        }
+        Tab three content. This is for testing.
+    </FluentTab>
+    <FluentTab Label="Performance" Id="tab-4" DeferredLoading="@DeferredLoading">
+        @{
+            if (DeferredLoading)
+            {
+                Thread.Sleep(1000);
+            }
+        }
+        Tab four content. This is for testing.
+    </FluentTab>
+    <FluentTab Label="History" Id="tab-5" DeferredLoading="@DeferredLoading">
+        @{
+            if (DeferredLoading)
+            {
+                Thread.Sleep(1000);
+            }
+        }
+        Tab five content. This is for testing.
+    </FluentTab>
+    <FluentTab Label="Configuration" Id="tab-6" DeferredLoading="@DeferredLoading">
+        @{
+            if (DeferredLoading)
+            {
+                Thread.Sleep(1000);
+            }
+        }
+        Tab six content. This is for testing.
+    </FluentTab>
+</FluentTabs>
 
 @code {
-    protected override void OnInitialized()
+    private bool DeferredLoading = false;
+    private string? activeId = "tab-3";
+
+    FluentTab? changedto;    
+
+    private void HandleOnTabChange(FluentTab tab)
     {
-        Logger.LogInfo("App started");
-    }
+        changedto = tab;
+    }    
 }

@@ -15,7 +15,22 @@ public class Recipe
     [MaxLength(60, ErrorMessage = "Maximum length for the Title is 60 characters")]
     public string? Title { get; set; }
 
+    public int VersionNumber { get; set; }
+
     public DateTime Created { get; set; }
+
+    public bool Valid { get; set; }
+
+    public int BatchSize { get; set; }
+
+    public bool FixedBatchSize { get; set; }
+
+    public int MixTime { get; set; }
+
+    public int MixTemperature { get; set; }
+
+    public int UpperTemperatureDeviation { get; set; }
+    public int LowerTemperatureDeviation { get; set; }
 
     public ICollection<Job>? Jobs { get; set; }
 }

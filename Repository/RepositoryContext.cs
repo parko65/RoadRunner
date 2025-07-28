@@ -13,4 +13,5 @@ public class RepositoryContext : DbContext
     // DbSet properties for your entities
     public DbSet<Recipe> Recipes { get; set; }
     public DbSet<Job> Jobs { get; set; }
+    public DbSet<Destination> Destinations { get; set; }
 }

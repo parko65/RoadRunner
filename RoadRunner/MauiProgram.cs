@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.FluentUI.AspNetCore.Components;
 using NLog;
 using RoadRunner.Extensions;
+using RoadRunner.MigrationManager;
 
 namespace RoadRunner
 {
@@ -53,7 +54,11 @@ namespace RoadRunner
     		builder.Logging.AddDebug();
 #endif
 
-            return builder.Build();
+            var app = builder.Build();
+
+            app.Services.MigrateDatabase();
+
+            return app;
         }
     }
 }

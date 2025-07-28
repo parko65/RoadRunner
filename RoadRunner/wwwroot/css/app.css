@@ -12,6 +12,10 @@ a, .btn-link {
     color: #006bb7;
 }
 
+.tab-button {
+    height: 50px;
+}
+
 .main {
     min-height: calc(100dvh - 86px);
     color: var(--neutral-foreground-rest);
