@@ -20,8 +20,7 @@
     [Inject]
     public IMapper mapper { get; set; } = default!;
 
-    public RecipeForCreation DialogData { get; set; } = new();
-    private RecipeModel _createdRecipe { get; set; } = new();
+    public RecipeForCreation DialogData { get; set; } = new();    
 
     [Inject]
     public IDialogService DialogService { get; set; } = default!;
@@ -59,9 +58,9 @@
 
             var createdRecipe = await Service.RecipeService.CreateRecipeAsync(recipeForCreation);
 
-            _createdRecipe = mapper.Map<RecipeModel>(createdRecipe);
+            var createdRecipeModel = mapper.Map<RecipeModel>(createdRecipe);
 
-            await OnRecipeCreated.InvokeAsync(_createdRecipe);
+            await OnRecipeCreated.InvokeAsync(createdRecipeModel);
         }
     }
 }
