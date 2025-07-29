@@ -19,7 +19,7 @@ public partial class Home
     private RecipeModel? _selectedRecipe;
 
     private bool DeferredLoading = false;
-    private string? activeId = "tab-1";
+    private string? activeId = "overview";
 
     FluentTab? changedto;
 
@@ -43,8 +43,19 @@ public partial class Home
         _recipes.Add(recipe);        
     }
 
-    private void HandleOnTabChange(FluentTab tab)
+    private async Task HandleOnTabChange(FluentTab tab)
     {
         changedto = tab;
+        activeId = tab.Id;
+
+        IEnumerable<Locale> locales = await TextToSpeech.Default.GetLocalesAsync();
+        SpeechOptions options = new SpeechOptions()
+        {
+            Pitch = 1.2f,
+            Volume = 0.55f,
+            Locale = locales.FirstOrDefault(x => x.Name == "Microsoft Zira")
+        };
+
+        await TextToSpeech.Default.SpeakAsync($"{activeId}", options);
     }
 }
