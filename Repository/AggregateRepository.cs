@@ -9,6 +9,7 @@ public class AggregateRepository : RepositoryBase<Aggregate>, IAggregateReposito
         : base(repositoryContext)
     {
     }
+
     public async Task<IEnumerable<Aggregate>> GetAggregatesAsync(bool trackChanges) =>
         await FindAll(trackChanges)
             .OrderBy(a => a.Name)

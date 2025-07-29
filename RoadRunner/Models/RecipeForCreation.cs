@@ -8,7 +8,7 @@ public sealed class RecipeForCreation
     public string Name { get; set; } = string.Empty;
 
     [Required(ErrorMessage = "Recipe title is a required field.")]
-    [MaxLength(30, ErrorMessage = "Name must be less than 20 characters")]
+    [MaxLength(60, ErrorMessage = "Name must be less than 60 characters")]
     public string Title { get; set; } = string.Empty;
 
     [Required(ErrorMessage = "Recipe version is a required field.")]

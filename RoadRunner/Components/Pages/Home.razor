@@ -3,39 +3,30 @@
 @using Microsoft.Extensions.Options
 @using RoadRunner.Components.Dialogs
 @using RoadRunner.Components.Tabs
-@using System.Diagnostics
 @using libplctag
 @using libplctag.DataTypes
+@using RoadRunner.Models
 
-<FluentTabs @bind-ActiveTabId="activeId" OnTabChange="HandleOnTabChange" Size="TabSize.Large">
-    <OverviewTabs />
+<FluentTabs @bind-ActiveTabId="activeId" OnTabChange="HandleOnTabChange" Size="TabSize.Large" Style="margin-bottom: 12px;">
+    <OverviewTabs OnRecipeCreated="HandleRecipeCreated"/>
     <RecordsTabs />
-    <FluentTab Label="Production" Id="tab-3" DeferredLoading="@DeferredLoading">
-        @{
-            if (DeferredLoading)
-            {
-                Thread.Sleep(1000);
-            }
-        }
-        Tab three content. This is for testing.
-    </FluentTab>
-    <FluentTab Label="Performance" Id="tab-4" DeferredLoading="@DeferredLoading">
-        @{
-            if (DeferredLoading)
-            {
-                Thread.Sleep(1000);
-            }
-        }
-        Tab four content. This is for testing.
-    </FluentTab>
-    <FluentTab Label="History" Id="tab-5" DeferredLoading="@DeferredLoading">
-        @{
-            if (DeferredLoading)
-            {
-                Thread.Sleep(1000);
-            }
-        }
-        Tab five content. This is for testing.
-    </FluentTab>
+    <ProductionTabs />
+    <PerformanceTabs />
+    <HistoryTabs />
     <ConfigurationTabs />
 </FluentTabs>
+
+<FluentDivider />
+
+<FluentGrid AdaptiveRendering="true">
+    <FluentGridItem xs="12">
+        Job Grid goes here
+    </FluentGridItem>
+    <FluentGridItem xs="4">
+        <FluentListbox TOption="RecipeModel"
+            Items="_recipes"
+            Height="150px"
+            OptionText="@(r => r.Name)"
+            @bind-SelectedOption="_selectedRecipe"/>
+    </FluentGridItem>
+</FluentGrid>

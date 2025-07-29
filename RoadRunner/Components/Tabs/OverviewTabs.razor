@@ -1,4 +1,5 @@
-﻿@using RoadRunner.Components.Dialogs
+﻿@using AutoMapper
+@using RoadRunner.Components.Dialogs
 @using RoadRunner.Models
 @using Service.Contracts
 @using Shared.DataTransferObjects
@@ -8,6 +9,7 @@
         <FluentButton Class="tab-button" IconStart="@(new Icons.Regular.Size16.ArrowSwap())" Appearance="Appearance.Lightweight">Change Tonnage</FluentButton>
         <FluentButton Class="tab-button" IconStart="@(new Icons.Regular.Size16.ArrowUp())" Appearance="Appearance.Lightweight">Job Up</FluentButton>
         <FluentButton Class="tab-button" IconStart="@(new Icons.Regular.Size16.ArrowDown())" Appearance="Appearance.Lightweight">Job Down</FluentButton>
+        <FluentButton Class="tab-button" IconStart="@(new Icons.Regular.Size16.Info())" Appearance="Appearance.Lightweight">Production Info</FluentButton>
     </FluentStack>
 </FluentTab>
 
@@ -15,23 +17,33 @@
     [Inject]
     public IServiceManager Service { get; set; } = default!;
 
+    [Inject]
+    public IMapper mapper { get; set; } = default!;
+
     public RecipeForCreation DialogData { get; set; } = new();
+    private RecipeModel _createdRecipe { get; set; } = new();
 
     [Inject]
     public IDialogService DialogService { get; set; } = default!;
+
+    [Parameter]
+    public EventCallback<RecipeModel> OnRecipeCreated { get; set; }
 
     private async Task ShowRecipeEditorAsync()
     {
         var dialog = await DialogService.ShowDialogAsync(DialogHelper.From<RecipeEditorDialog>(), DialogData, new DialogParameters()
         {
-            Height = "400px",
+            Height = "600px",
             Width = "800px",
             Title = "Recipe Editor",
             PreventDismissOnOverlayClick = true,
-            PreventScroll = true
-        });
+            PreventScroll = true,
+            OnDialogResult = DialogService.CreateDialogCallback(this, HandleRecipeCreated)
+        });        
+    }
 
-        var result = await dialog.Result;
+    private async Task HandleRecipeCreated(DialogResult result)
+    {
         if (!result.Cancelled && result.Data != null)
         {
             DialogData = (RecipeForCreation)result.Data;
@@ -46,6 +58,10 @@
             DialogData.LowerTemperatureDeviation);
 
             var createdRecipe = await Service.RecipeService.CreateRecipeAsync(recipeForCreation);
+
+            _createdRecipe = mapper.Map<RecipeModel>(createdRecipe);
+
+            await OnRecipeCreated.InvokeAsync(_createdRecipe);
         }
     }
 }

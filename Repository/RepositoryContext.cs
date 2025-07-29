@@ -22,4 +22,5 @@ public class RepositoryContext : DbContext
     public DbSet<Aggregate> Aggregates { get; set; }
     public DbSet<HotBin> HotBins { get; set; }
     public DbSet<RecipeHotBin> RecipeHotBins { get; set; }
+    public DbSet<Destination> Destinations { get; set; }
 }

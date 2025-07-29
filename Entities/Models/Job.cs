@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Enums;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Entities.Models;
@@ -11,6 +12,8 @@ public class Job
     public int JobNumber { get; set; }
 
     public DateTime Created { get; set; }
+
+    public JobStatus Status { get; set; }
 
     [ForeignKey(nameof(Recipe))]
     public int RecipeId { get; set; }

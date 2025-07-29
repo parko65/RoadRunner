@@ -20,41 +20,49 @@
     <EditForm EditContext="@_editContext" FormName="simple_register">
         <DataAnnotationsValidator />
 
-        <FluentTextField Name="recipe_name"
-                         @bind-Value="@Content.Name"
-                         Label="Name"
-                         Required />
-        <FluentTextField Name="recipe_title"
-                         @bind-Value="@Content.Title"
-                         Label="Title"
-                         Required />
+        <FluentStack Orientation="Orientation.Horizontal">
+            <FluentStack Orientation="Orientation.Vertical">
+                <FluentTextField Name="recipe_name"
+                                 @bind-Value="@Content.Name"
+                                 Label="Name"
+                                 Required />
+                <FluentTextField Name="recipe_title"
+                                 @bind-Value="@Content.Title"
+                                 Label="Title"
+                                 Required />
 
-        <FluentTextField Name="recipe_version"
-                         @bind-Value="@Content.VersionNumber"
-                         Label="Version"
-                         Required />
+                <FluentTextField Name="recipe_version"
+                                 @bind-Value="@Content.VersionNumber"
+                                 Label="Version"
+                                 Required />
 
-        <FluentCheckbox Name="recipe_valid"
-                        @bind-Value="@Content.Valid"
-                        Label="Valid" />
+                <FluentCheckbox Name="recipe_valid"
+                                @bind-Value="@Content.Valid"
+                                Label="Valid" />
 
-        <FluentTextField Name="recipe_batchsize"
-                         @bind-Value="@Content.BatchSize"
-                         Label="Batch Size"
-                         Required />
+                <FluentTextField Name="recipe_batchsize"
+                                 @bind-Value="@Content.BatchSize"
+                                 Label="Batch Size"
+                                 Required />
 
-        <FluentCheckbox Name="recipe_fixedsize"
-                        @bind-Value="@Content.FixedBatchSize"
-                        Label="Fixed" />
+                <FluentCheckbox Name="recipe_fixedsize"
+                                @bind-Value="@Content.FixedBatchSize"
+                                Label="Fixed" />
 
-        <FluentTextField Name="recipe_mixtime"
-                         @bind-Value="@Content.MixTime"
-                         Label="Mix Time"
-                         Required />
+                <FluentTextField Name="recipe_mixtime"
+                                 @bind-Value="@Content.MixTime"
+                                 Label="Mix Time"
+                                 Required />
 
-        <div style="color: var(--error);">
-            <FluentValidationSummary />
-        </div>
+                <FluentTextField Name="recipe_mixtemperature"
+                                 @bind-Value="@Content.MixTemperature"
+                                 Label="Mix Temperature"
+                                 Required />
+            </FluentStack>
+            <div style="color: var(--error);">
+                <FluentValidationSummary />
+            </div>
+        </FluentStack>        
     </EditForm>
 </FluentDialogBody>
 
