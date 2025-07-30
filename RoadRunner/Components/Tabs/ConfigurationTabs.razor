@@ -1,8 +1,38 @@
-﻿<FluentTab Label="Configuration" Id="configuration">
+﻿@using AutoMapper
+@using RoadRunner.Components.Dialogs
+@using RoadRunner.Models
+@using Service.Contracts
+<FluentTab Label="Configuration" Id="configuration">
     <FluentStack>
-        <FluentButton Class="tab-button" IconStart="@(new Icons.Regular.Size16.DocumentEdit())" Appearance="Appearance.Lightweight">Material Definition</FluentButton>
+        <FluentButton Class="tab-button" IconStart="@(new Icons.Regular.Size16.DocumentEdit())" Appearance="Appearance.Lightweight" OnClick="ShowMaterialDefinitionsDialogAsync">Material Definitions</FluentButton>
         <FluentButton Class="tab-button" IconStart="@(new Icons.Regular.Size16.ArrowSwap())" Appearance="Appearance.Lightweight">Material Loading</FluentButton>
         <FluentButton Class="tab-button" IconStart="@(new Icons.Regular.Size16.Settings())" Appearance="Appearance.Lightweight">Options</FluentButton>
         <FluentButton Class="tab-button" IconStart="@(new Icons.Regular.Size16.VehicleTruck())" Appearance="Appearance.Lightweight">Vehicles</FluentButton>
     </FluentStack>
 </FluentTab>
+
+@code {
+    [Inject]
+    public IDialogService DialogService { get; set; } = default!;
+
+    private Material DialogData = new Material();
+
+    private async Task ShowMaterialDefinitionsDialogAsync()
+    {
+        var dialog = await DialogService.ShowDialogAsync(DialogHelper.From<MaterialDefinitionsDialog>(), DialogData, new DialogParameters()
+        {
+            Height = "600px",
+            Width = "820px",
+            Title = "Material Definitions",
+            PreventDismissOnOverlayClick = true,
+            PreventScroll = true            
+        });
+    }
+
+    public class Material()
+    {
+        public AggregateForCreation? AggregateForCreation { get; set; }
+        public BitumenForCreation? BitumenForCreation { get; set; }
+        public FillerForCreation? FillerForCreation { get; set; }
+    }
+}

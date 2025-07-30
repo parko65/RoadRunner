@@ -43,19 +43,9 @@ public partial class Home
         _recipes.Add(recipe);        
     }
 
-    private async Task HandleOnTabChange(FluentTab tab)
+    private void HandleOnTabChange(FluentTab tab)
     {
         changedto = tab;
         activeId = tab.Id;
-
-        IEnumerable<Locale> locales = await TextToSpeech.Default.GetLocalesAsync();
-        SpeechOptions options = new SpeechOptions()
-        {
-            Pitch = 1.2f,
-            Volume = 0.55f,
-            Locale = locales.FirstOrDefault(x => x.Name == "Microsoft Zira")
-        };
-
-        await TextToSpeech.Default.SpeakAsync($"{activeId}", options);
     }
 }
