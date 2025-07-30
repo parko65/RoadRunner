@@ -15,14 +15,18 @@
     [Inject]
     public IDialogService DialogService { get; set; } = default!;
 
-    private Material DialogData = new Material();
+    private Material DialogData = new Material() {
+        AggregateForCreation = new AggregateForCreation(),
+        BitumenForCreation = new BitumenForCreation(),
+        FillerForCreation = new FillerForCreation()
+    };
 
     private async Task ShowMaterialDefinitionsDialogAsync()
     {
         var dialog = await DialogService.ShowDialogAsync(DialogHelper.From<MaterialDefinitionsDialog>(), DialogData, new DialogParameters()
         {
-            Height = "600px",
-            Width = "820px",
+            Height = "800px",
+            Width = "930px",
             Title = "Material Definitions",
             PreventDismissOnOverlayClick = true,
             PreventScroll = true            

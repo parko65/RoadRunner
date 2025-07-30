@@ -15,91 +15,92 @@
 
 <!-- Body -->
 <FluentDialogBody>
-    <FluentGrid Justify="JustifyContent.Center">
-        <FluentGridItem xs="2">
-            <FluentButton Class="dialog-tab-button"
-                          IconStart="@(new Icons.Regular.Size16.DocumentEdit())"
-                          Appearance="Appearance.Lightweight"
-                          OnClick="ShowAggs">
-                Agg.<br />
-                Hot Bins
-            </FluentButton>
-        </FluentGridItem>
-        <FluentGridItem xs="2">
-            <FluentButton Class="dialog-tab-button"
-                          IconStart="@(new Icons.Regular.Size16.DocumentEdit())"
-                          Appearance="Appearance.Lightweight"
-                          OnClick="ShowBit">
-                Bitumen
-            </FluentButton>
-        </FluentGridItem>
-        <FluentGridItem xs="2">
-            <FluentButton Class="dialog-tab-button"
-                          IconStart="@(new Icons.Regular.Size16.DocumentEdit())"
-                          Appearance="Appearance.Lightweight"
-                          OnClick="ShowFiller">
-                Filler
-            </FluentButton>
-        </FluentGridItem>
-        <FluentGridItem xs="2">
-            <FluentButton Class="dialog-tab-button"
-                          IconStart="@(new Icons.Regular.Size16.DocumentEdit())"
-                          Appearance="Appearance.Lightweight" Disabled="true"
-                          OnClick="ShowReturnDust">
-                Return Dust
-            </FluentButton>
-        </FluentGridItem>
-        <FluentGridItem xs="2">
-            <FluentButton Class="dialog-tab-button"
-                          IconStart="@(new Icons.Regular.Size16.DocumentEdit())"
-                          Appearance="Appearance.Lightweight"
-                          OnClick="ShowColdFeed">
-                Coldfeed
-            </FluentButton>
-        </FluentGridItem>
-        <FluentGridItem xs="2">
-            <FluentButton Class="dialog-tab-button"
-                          IconStart="@(new Icons.Regular.Size16.DocumentEdit())"
-                          Appearance="Appearance.Lightweight"
-                          OnClick="ShowAdditives">
-                Additives
-            </FluentButton>
-        </FluentGridItem>
-        <FluentGridItem xs="2">
-            <FluentButton Class="dialog-tab-button"
-                          IconStart="@(new Icons.Regular.Size16.DocumentEdit())"
-                          Appearance="Appearance.Lightweight"
-                          OnClick="ShowFixedAdditives">
-                Fixed<br />
-                Additives
-            </FluentButton>
-        </FluentGridItem>
-        <FluentGridItem xs="2">
-            <FluentButton Class="dialog-tab-button"
-                          IconStart="@(new Icons.Regular.Size16.DocumentEdit())"
-                          Appearance="Appearance.Lightweight" Disabled="true"
-                          OnClick="ShowReclaim">
-                Reclaim
-            </FluentButton>
-        </FluentGridItem>
-        <FluentGridItem xs="2">
-            <FluentButton Class="dialog-tab-button"
-                          IconStart="@(new Icons.Regular.Size16.DocumentEdit())"
-                          Appearance="Appearance.Lightweight"
-                          OnClick="ShowSmallDose">
-                Small Dose
-            </FluentButton>
-        </FluentGridItem>
-    </FluentGrid>
+    
+        <FluentGrid Justify="JustifyContent.Center">
+            <FluentGridItem xs="2">
+                <FluentButton Class="dialog-tab-button"
+                              IconStart="@(new Icons.Regular.Size16.DocumentEdit())"
+                              Appearance="Appearance.Outline"
+                              OnClick="ShowAggregates">
+                    Agg.<br />
+                    Hot Bins
+                </FluentButton>
+            </FluentGridItem>
+            <FluentGridItem xs="2">
+                <FluentButton Class="dialog-tab-button"
+                              IconStart="@(new Icons.Regular.Size16.DocumentEdit())"
+                              Appearance="Appearance.Outline"
+                              OnClick="ShowBit">
+                    Bitumen
+                </FluentButton>
+            </FluentGridItem>
+            <FluentGridItem xs="2">
+                <FluentButton Class="dialog-tab-button"
+                              IconStart="@(new Icons.Regular.Size16.DocumentEdit())"
+                              Appearance="Appearance.Outline"
+                              OnClick="ShowFiller">
+                    Filler
+                </FluentButton>
+            </FluentGridItem>
+            <FluentGridItem xs="2">
+                <FluentButton Class="dialog-tab-button"
+                              IconStart="@(new Icons.Regular.Size16.DocumentEdit())"
+                              Appearance="Appearance.Outline" Disabled="true"
+                              OnClick="ShowReturnDust">
+                    Return Dust
+                </FluentButton>
+            </FluentGridItem>
+            <FluentGridItem xs="2">
+                <FluentButton Class="dialog-tab-button"
+                              IconStart="@(new Icons.Regular.Size16.DocumentEdit())"
+                              Appearance="Appearance.Outline"
+                              OnClick="ShowColdFeed">
+                    Coldfeed
+                </FluentButton>
+            </FluentGridItem>
+            <FluentGridItem xs="2">
+                <FluentButton Class="dialog-tab-button"
+                              IconStart="@(new Icons.Regular.Size16.DocumentEdit())"
+                              Appearance="Appearance.Outline"
+                              OnClick="ShowAdditives">
+                    Additives
+                </FluentButton>
+            </FluentGridItem>
+            <FluentGridItem xs="2">
+                <FluentButton Class="dialog-tab-button"
+                              IconStart="@(new Icons.Regular.Size16.DocumentEdit())"
+                              Appearance="Appearance.Outline"
+                              OnClick="ShowFixedAdditives">
+                    Fixed<br />
+                    Additives
+                </FluentButton>
+            </FluentGridItem>
+            <FluentGridItem xs="2">
+                <FluentButton Class="dialog-tab-button"
+                              IconStart="@(new Icons.Regular.Size16.DocumentEdit())"
+                              Appearance="Appearance.Outline" Disabled="true"
+                              OnClick="ShowReclaim">
+                    Reclaim
+                </FluentButton>
+            </FluentGridItem>
+            <FluentGridItem xs="2">
+                <FluentButton Class="dialog-tab-button"
+                              IconStart="@(new Icons.Regular.Size16.DocumentEdit())"
+                              Appearance="Appearance.Outline"
+                              OnClick="ShowSmallDose">
+                    Small Dose
+                </FluentButton>
+            </FluentGridItem>
+        </FluentGrid>
 
     <MaterialsDialogContainer Content="currentContent" />
 
 </FluentDialogBody>
 
+
 <!-- Footer -->
 <FluentDialogFooter>
     <FluentButton Appearance="Appearance.Accent"
-                  Disabled="@(!_editContext.Validate())"
                   OnClick="@SaveAsync">
         Save
     </FluentButton>
@@ -112,8 +113,6 @@
 @code {
     private RenderFragment? currentContent;
 
-    private EditContext _editContext = default!;
-
     [CascadingParameter]
     public FluentDialog Dialog { get; set; } = default!;
 
@@ -122,16 +121,12 @@
 
     protected override void OnInitialized()
     {
-        _editContext = new EditContext(Content);
-        ShowAggs();
+        ShowAggregates();
     }
 
     private async Task SaveAsync()
     {
-        if (_editContext.Validate())
-        {
-            await Dialog.CloseAsync(Content);
-        }
+        await Dialog.CloseAsync(Content);
     }
 
     private RenderFragment CreateComponent<T>(Dictionary<string, object>? parameters = null) where T : ComponentBase
@@ -156,12 +151,12 @@
         await Dialog.CancelAsync();
     }
 
-    private void ShowAggs() => currentContent = CreateComponent<AggregatesDataGrid>();
+    private void ShowAggregates() => currentContent = CreateComponent<CAggregates>(new() { ["AggregateForCreation"] = Content!.AggregateForCreation! });
     private void ShowBit() => currentContent = CreateComponent<BitumenDataGrid>();
     private void ShowFiller() => currentContent = CreateComponent<FillersDataGrid>(new() { ["Title"] = "Fuck you" });
     private void ShowReturnDust() => currentContent = CreateComponent<ReturnDustDataGrid>();
     private void ShowColdFeed() => currentContent = CreateComponent<ColdfeedDataGrid>();
-    private void ShowAdditives() => currentContent = CreateComponent<AdditivesDataGrid>();
+    private void ShowAdditives() => currentContent = CreateComponent<CAdditives>();
     private void ShowFixedAdditives() => currentContent = CreateComponent<FixedAdditivesDataGrid>();
     private void ShowReclaim() => currentContent = CreateComponent<ReclaimDataGrid>();
     private void ShowSmallDose() => currentContent = CreateComponent<SmallDoseDataGrid>();

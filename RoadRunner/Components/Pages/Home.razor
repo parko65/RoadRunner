@@ -29,4 +29,11 @@
             OptionText="@(r => r.Name)"
             @bind-SelectedOption="_selectedRecipe"/>
     </FluentGridItem>
+    <FluentGridItem xs="4">
+        <FluentLabel Typo="Typography.Header">@_selectedRecipe?.Name</FluentLabel>
+        <FluentLabel Typo="Typography.Subject">@_selectedRecipe?.Title</FluentLabel>
+    </FluentGridItem>
+    <FluentGridItem xs="4">
+        <FluentLabel>Add Job</FluentLabel>
+    </FluentGridItem>
 </FluentGrid>

@@ -26,6 +26,7 @@ public partial class Home
     protected override async Task OnInitializedAsync()
     {
         await LoadRecipesAsync();
+        EnsureSelected();
     }
 
     private async Task LoadRecipesAsync()
@@ -47,5 +48,13 @@ public partial class Home
     {
         changedto = tab;
         activeId = tab.Id;
+    }
+
+    private void EnsureSelected()
+    {
+        if (_recipes.Count > 0 && _selectedRecipe == null)
+        {
+            _selectedRecipe = _recipes[0];
+        }
     }
 }
