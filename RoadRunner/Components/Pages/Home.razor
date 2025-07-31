@@ -8,7 +8,7 @@
 @using RoadRunner.Models
 
 <FluentTabs @bind-ActiveTabId="activeId" OnTabChange="HandleOnTabChange" Size="TabSize.Large" Style="margin-bottom: 12px;">
-    <OverviewTabs OnRecipeCreated="HandleRecipeCreated"/>
+    <OverviewTabs OnRecipeCreated="HandleRecipeCreated" />
     <RecordsTabs />
     <ProductionTabs />
     <PerformanceTabs />
@@ -20,20 +20,50 @@
 
 <FluentGrid AdaptiveRendering="true">
     <FluentGridItem xs="12">
-        Job Grid goes here
+        <FluentDataGrid Items="_jobs" TGridItem="JobModel" ShowHover="true">
+            <PropertyColumn Property="@(j => j.JobNumber)" Title="Number" />
+            <PropertyColumn Property="@(j => j.Recipe!.Name)" Title="Recipe" />
+            <PropertyColumn Property="@(j => j.Destination!.Name)" Title="Destination" />
+            <PropertyColumn Property="@(j => j.Status)" Title="Status" />
+            <PropertyColumn Property="@(j => j.Created)" Title="Created" />
+            <PropertyColumn Property="@(j => j.Tonnage)" Title="Tonnage" />
+        </FluentDataGrid>
     </FluentGridItem>
-    <FluentGridItem xs="4">
+    <FluentGridItem xs="3">
+        <FluentLabel Typo="Typography.Header" Style="margin-bottom: 8px;">Recipes</FluentLabel>
         <FluentListbox TOption="RecipeModel"
-            Items="_recipes"
-            Height="150px"
-            OptionText="@(r => r.Name)"
-            @bind-SelectedOption="_selectedRecipe"/>
+                       Items="_recipes"
+                       Height="250px"
+                       OptionText="@(r => r.Name)"
+                       @bind-SelectedOption="_selectedRecipe" />
     </FluentGridItem>
     <FluentGridItem xs="4">
         <FluentLabel Typo="Typography.Header">@_selectedRecipe?.Name</FluentLabel>
         <FluentLabel Typo="Typography.Subject">@_selectedRecipe?.Title</FluentLabel>
     </FluentGridItem>
     <FluentGridItem xs="4">
-        <FluentLabel>Add Job</FluentLabel>
+        <FluentLabel Typo="Typography.Header" Style="margin-bottom: 8px;">Job Details</FluentLabel>
+        <FluentSelect Items="_destinations" TOption="DestinationModel" OptionText="@(d => d.Name)" @bind-SelectedOption="_selectedDestination"
+                      Placeholder="Select destination..." />
+
+        <EditForm EditContext="_editContext" OnValidSubmit="HandleValidSubmit">
+            <DataAnnotationsValidator />
+
+            <FluentStack Orientation="Orientation.Vertical">
+                <div>
+                    <FluentTextField @bind-Value="_jobForCreation.JobNumber" Label="Job Number" Required="true" AutoComplete="off" />
+                </div>
+                <div>
+                    <FluentTextField @bind-Value="_jobForCreation.Tonnage" Label="Tonnage" Required="true" AutoComplete="off" />
+                </div>
+            </FluentStack>
+
+            <div style="margin-top: 12px;">
+                <FluentButton Type="ButtonType.Submit" IconStart="@(new Icons.Regular.Size16.Save())" Appearance="Appearance.Outline" Disabled="formInvalid">
+                    Add To Queue
+                </FluentButton>
+            </div>
+
+        </EditForm>
     </FluentGridItem>
 </FluentGrid>

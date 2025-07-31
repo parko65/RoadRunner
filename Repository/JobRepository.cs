@@ -21,6 +21,8 @@ public class JobRepository : RepositoryBase<Job>, IJobRepository
     public async Task<IEnumerable<Job>> GetJobsByStatusAsync(JobStatus status, bool trackChanges)
     {
         return await FindByCondition(j => j.Status.Equals(status), trackChanges)
+            .Include(j => j.Recipe)
+            .Include(j => j.Destination)
             .OrderBy(j => j.Id)
             .ToListAsync();
     }

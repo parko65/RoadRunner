@@ -19,8 +19,11 @@ public class MappingProfile : Profile
 
         CreateMap<Job, JobDto>();
         CreateMap<JobForCreationDto, Job>();
+        CreateMap<JobDto, JobModel>();
+        CreateMap<JobForCreation, JobForCreationDto>();
 
         CreateMap<Destination, DestinationDto>();
         CreateMap<DestinationForCreationDto, Destination>();
+        CreateMap<DestinationDto, DestinationModel>();
     }
 }

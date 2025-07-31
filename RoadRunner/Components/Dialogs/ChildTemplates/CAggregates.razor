@@ -2,35 +2,50 @@
 @using RoadRunner.Models
 @using Service.Contracts
 @using Shared.DataTransferObjects
+@implements IDisposable
 
 <div style="height: 230px; overflow-y: scroll;">
-    <FluentDataGrid Items="_aggregates" AutoFit="true">
+    <FluentDataGrid Items="_aggregates" TGridItem="AggregateModel" OnRowClick="HandleRowClick" RowClass="GetRowClass" GridTemplateColumns="0.2fr 0.5fr" ShowHover="true">
         <PropertyColumn Property="@(a => a.MaterialNumber)" Title="Number" />
         <PropertyColumn Property="@(a => a.Name)" Title="Name" />
+        <TemplateColumn>
+            <div class="hidden-buttons">
+                <FluentAnchor Href="#" Appearance="Appearance.Hypertext" IconStart="@(new Icons.Regular.Size16.Delete())" OnClick="@(async () => await DeleteAsync(context))"/>
+            </div>
+        </TemplateColumn>
     </FluentDataGrid>
 </div>
 
-<EditForm Model="_editContext" OnValidSubmit="HandleValidSubmit">
+<EditForm EditContext="_editContext" OnValidSubmit="HandleValidSubmit">
     <DataAnnotationsValidator />
     <FluentStack>
         <div>
             <FluentTextField @bind-Value="AggregateForCreation.MaterialNumber"
                              Label="Number"
                              Required="true"
-                             Placeholder="Enter aggregate number" />
+                             Placeholder="Enter aggregate number" AutoComplete="off" />
         </div>
         <div>
             <FluentTextField @bind-Value="AggregateForCreation.Name"
                              Label="Name"
                              Required="true"
-                             Placeholder="Enter aggregate name" />
+                             Placeholder="Enter aggregate name" AutoComplete="off" />
         </div>
     </FluentStack>
 
-    <FluentButton Type="ButtonType.Submit"
-                  Appearance="Appearance.Accent">
-        Create Aggregate
-    </FluentButton>
+    <div style="margin-top: 12px;">
+        <FluentStack>
+            <FluentButton Type="ButtonType.Submit" IconStart="@(new Icons.Regular.Size16.Save())"
+                          Appearance="Appearance.Outline" Disabled="formInvalid">
+                Create
+            </FluentButton>
+            <FluentButton IconStart="@(new Icons.Regular.Size16.Edit())"
+                          Appearance="Appearance.Outline" Disabled="!editMode">
+                Save Edits
+            </FluentButton>
+        </FluentStack>
+    </div>
+
 </EditForm>
 
 
@@ -46,11 +61,16 @@
 
     private IQueryable<AggregateModel>? _aggregates;
 
-    private EditContext _editContext = default!;    
+    private AggregateModel? _selectedAggregate { get; set; }
+
+    private EditContext _editContext = default!;
+    private bool formInvalid = true;
+    private bool editMode = false;
 
     protected override void OnInitialized()
     {
         _editContext = new EditContext(AggregateForCreation);
+        _editContext.OnFieldChanged += HandleFieldChanged;
     }
 
     protected override async Task OnInitializedAsync()
@@ -68,6 +88,25 @@
         AggregateForCreation = new AggregateForCreation();
 
         _editContext = new EditContext(AggregateForCreation);
+        _editContext.OnValidationStateChanged += ValidationChanged;
+        _editContext.NotifyValidationStateChanged();
+    }
+
+    private void HandleFieldChanged(object? sender, FieldChangedEventArgs e)
+    {
+        // Handle field changes if necessary
+        formInvalid = !_editContext.Validate();
+        StateHasChanged();
+    }
+
+    private void ValidationChanged(object? sender, ValidationStateChangedEventArgs e)
+    {
+        formInvalid = true;
+        _editContext.OnFieldChanged -= HandleFieldChanged;
+        AggregateForCreation = new AggregateForCreation();
+        _editContext = new EditContext(AggregateForCreation);
+        _editContext.OnFieldChanged += HandleFieldChanged;
+        _editContext.OnValidationStateChanged -= ValidationChanged;
     }
 
     private async Task LoadAggregatesAsync()
@@ -80,5 +119,36 @@
 
             _aggregates = aggs.AsQueryable();
         }
+    }
+
+    private void HandleRowClick(FluentDataGridRow<AggregateModel> row)
+    {
+        _selectedAggregate = row.Item;
+
+        // Since we now have a selected aggregate, we can populate the AggregateForCreation for editing but we need to parse the MaterialNumber to string
+        AggregateForCreation.MaterialNumber = _selectedAggregate!.MaterialNumber.ToString();
+        AggregateForCreation.Name = _selectedAggregate.Name;
+
+        editMode = true;
+    }
+
+    private string GetRowClass(AggregateModel aggregate)
+    {
+        return _selectedAggregate != null && _selectedAggregate.Id == aggregate.Id ? "selected-row" : string.Empty;
+    }
+
+    private async Task DeleteAsync(AggregateModel aggregate)
+    {
+        await Service.AggregateService.DeleteAggregateAsync(aggregate.Id, trackChanges: false);
+
+        AggregateForCreation = new AggregateForCreation();
+
+        await LoadAggregatesAsync();
+    }
+
+    public void Dispose()
+    {
+        _editContext.OnFieldChanged -= HandleFieldChanged;
+        _editContext.OnValidationStateChanged -= ValidationChanged;
     }
 }

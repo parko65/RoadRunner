@@ -12,8 +12,8 @@ using Repository;
 namespace RoadRunner.Migrations
 {
     [DbContext(typeof(RepositoryContext))]
-    [Migration("20250728140655_AddHotBinAndRelatedTables")]
-    partial class AddHotBinAndRelatedTables
+    [Migration("20250731113454_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -72,7 +72,21 @@ namespace RoadRunner.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Destination");
+                    b.ToTable("Destinations");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            DestinationType = 0,
+                            Name = "Bin 1"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            DestinationType = 1,
+                            Name = "YM73 VSC"
+                        });
                 });
 
             modelBuilder.Entity("Entities.Models.HotBin", b =>
@@ -94,10 +108,12 @@ namespace RoadRunner.Migrations
 
             modelBuilder.Entity("Entities.Models.Job", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier")
+                        .HasColumnType("int")
                         .HasColumnName("JobId");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
@@ -109,6 +125,9 @@ namespace RoadRunner.Migrations
                         .HasColumnType("int");
 
                     b.Property<int>("RecipeId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Status")
                         .HasColumnType("int");
 
                     b.HasKey("Id");

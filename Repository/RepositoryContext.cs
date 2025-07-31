@@ -1,5 +1,6 @@
 ﻿using Entities.Models;
 using Microsoft.EntityFrameworkCore;
+using Repository.Configuration;
 
 namespace Repository;
 
@@ -14,6 +15,8 @@ public class RepositoryContext : DbContext
     {
         modelBuilder.Entity<RecipeHotBin>()
             .HasKey(rh => new { rh.RecipeId, rh.HotBinId });
+
+        modelBuilder.ApplyConfiguration(new DestinationConfiguration());
     }
     
     // DbSet properties for your entities

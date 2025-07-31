@@ -1,4 +1,2 @@
-﻿using Enums;
-
-namespace Shared.DataTransferObjects;
-public record JobForCreationDto(int JobNumber, DateTime Created, JobStatus Status, int RecipeId, int DestinationId);
+﻿namespace Shared.DataTransferObjects;
+public record JobForCreationDto(int JobNumber, double Tonnage, int RecipeId, int DestinationId);

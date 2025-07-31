@@ -12,8 +12,8 @@ using Repository;
 namespace RoadRunner.Migrations
 {
     [DbContext(typeof(RepositoryContext))]
-    [Migration("20250729122248_Temp")]
-    partial class Temp
+    [Migration("20250731130425_AddTonnageToJob")]
+    partial class AddTonnageToJob
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -73,6 +73,20 @@ namespace RoadRunner.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Destinations");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            DestinationType = 0,
+                            Name = "Bin 1"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            DestinationType = 1,
+                            Name = "YM73 VSC"
+                        });
                 });
 
             modelBuilder.Entity("Entities.Models.HotBin", b =>
@@ -94,10 +108,12 @@ namespace RoadRunner.Migrations
 
             modelBuilder.Entity("Entities.Models.Job", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier")
+                        .HasColumnType("int")
                         .HasColumnName("JobId");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
@@ -113,6 +129,9 @@ namespace RoadRunner.Migrations
 
                     b.Property<int>("Status")
                         .HasColumnType("int");
+
+                    b.Property<double>("Tonnage")
+                        .HasColumnType("float");
 
                     b.HasKey("Id");
 

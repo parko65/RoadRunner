@@ -6,10 +6,13 @@ namespace Entities.Models;
 public class Job
 {
     [Column("JobId")]
-    public Guid Id { get; set; }
+    public int Id { get; set; }
     
     [Required(ErrorMessage = "Job number is a required field.")]
     public int JobNumber { get; set; }
+
+    [Range(0.5, double.MaxValue, ErrorMessage = "Tonnage must be a positive number.")]
+    public double Tonnage { get; set; }
 
     public DateTime Created { get; set; }
 

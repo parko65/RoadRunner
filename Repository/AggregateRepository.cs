@@ -20,4 +20,6 @@ public class AggregateRepository : RepositoryBase<Aggregate>, IAggregateReposito
             .SingleOrDefaultAsync();
 
     public void CreateAggregate(Aggregate aggregate) => Create(aggregate);
+
+    public void DeleteAggregate(Aggregate aggregate) => Delete(aggregate);
 }
