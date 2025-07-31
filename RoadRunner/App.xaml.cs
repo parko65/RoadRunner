@@ -5,56 +5,32 @@ using System.Diagnostics;
 namespace RoadRunner;
 
 public partial class App : Application
-{        
-    const int WindowHeight = 1080;
-    public ILoggerManager Logger { get; private set; }
+{
+    const int WindowHeight = 1080;    
 
     public App()
     {
-        InitializeComponent();
-        Logger = new LoggerManager();
+        InitializeComponent();        
     }
 
     protected override Window CreateWindow(IActivationState? activationState)
     {
-        return new Window(new MainPage()) { Title = "Road Runner" };
-        //try
-        //{
-        //    var disp = DeviceDisplay.Current.MainDisplayInfo;
+        // get screen size
+        var disp = DeviceDisplay.Current.MainDisplayInfo;
 
-        //    // Add safety checks
-        //    if (disp.Density <= 0)
-        //    {
-        //        // Fallback to default window creation
-        //        return new Window(new MainPage()) { Title = "Road Runner" };
-        //    }
+        var windowWidth = disp.Width / 2;
 
-        //    var screenWidth = disp.Width / disp.Density;
-        //    var screenHeight = disp.Height / disp.Density;
-        //    var windowWidth = Math.Max(800, screenWidth / 2); // Ensure minimum width
+        var window = new Window(new MainPage()) { Title = "Road Runner" };
 
-        //    var window = new Window(new MainPage()) { Title = "Road Runner" };
+        // Set the window position to the right hand side of the screen
+        // Center the window on the screen
+        window.X = disp.Width / disp.Density - windowWidth; // Position the window on the right side of the screen
+        window.Y = (disp.Height / disp.Density - WindowHeight) / 2; // Center the window vertically            
 
-        //    // Ensure window fits on screen
-        //    var x = Math.Max(0, screenWidth - windowWidth);
-        //    var y = Math.Max(0, (screenHeight - WindowHeight) / 2);
+        window.Width = windowWidth; // Set the window width to 1920
+        window.Height = WindowHeight; // Set the window height to 1080
 
-        //    window.X = x;
-        //    window.Y = y;
-        //    window.Width = windowWidth;
-        //    window.Height = WindowHeight;
-
-        //    LogToEventLog("RoadRunner window created successfully", EventLogEntryType.Information);
-        //    Logger.LogInfo("RoadRunner window created successfully");
-
-        //    return window;
-        //}
-        //catch (Exception ex)
-        //{
-        //    // Log the exception and return a basic window
-        //    LogToEventLog($"Failed to create RoadRunner window: {ex.Message}\nStack: {ex.StackTrace}", EventLogEntryType.Error);
-        //    return new Window(new MainPage()) { Title = "Road Runner" };
-        //}
+        return window; // Return the created window
     }
 
     private void LogToEventLog(string message, EventLogEntryType type)
