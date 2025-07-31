@@ -11,22 +11,40 @@
 
         protected override Window CreateWindow(IActivationState? activationState)
         {
-            // get screen size
-            var disp = DeviceDisplay.Current.MainDisplayInfo;
+            try
+            {
+                var disp = DeviceDisplay.Current.MainDisplayInfo;
 
-            var windowWidth = disp.Width / 2;
+                // Add safety checks
+                if (disp.Density <= 0)
+                {
+                    // Fallback to default window creation
+                    return new Window(new MainPage()) { Title = "Road Runner" };
+                }
 
-            var window = new Window(new MainPage()) { Title = "Road Runner" };
+                var screenWidth = disp.Width / disp.Density;
+                var screenHeight = disp.Height / disp.Density;
+                var windowWidth = Math.Max(800, screenWidth / 2); // Ensure minimum width
 
-            // Set the window position to the right hand side of the screen
-            // Center the window on the screen
-            window.X = disp.Width / disp.Density - windowWidth; // Position the window on the right side of the screen
-            window.Y = (disp.Height / disp.Density - WindowHeight) / 2; // Center the window vertically            
+                var window = new Window(new MainPage()) { Title = "Road Runner" };
 
-            window.Width = windowWidth; // Set the window width to 1920
-            window.Height = WindowHeight; // Set the window height to 1080
+                // Ensure window fits on screen
+                var x = Math.Max(0, screenWidth - windowWidth);
+                var y = Math.Max(0, (screenHeight - WindowHeight) / 2);
 
-            return window; // Return the created window
+                window.X = x;
+                window.Y = y;
+                window.Width = windowWidth;
+                window.Height = WindowHeight;
+
+                return window;
+            }
+            catch (Exception ex)
+            {
+                // Log the exception and return a basic window
+                System.Diagnostics.Debug.WriteLine($"Window creation failed: {ex}");
+                return new Window(new MainPage()) { Title = "Road Runner" };
+            }
         }
     }
 }
