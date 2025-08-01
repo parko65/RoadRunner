@@ -5,9 +5,9 @@
 <FluentTab Label="Configuration" Id="configuration">
     <FluentStack>
         <FluentButton Class="tab-button" IconStart="@(new Icons.Regular.Size16.DocumentEdit())" Appearance="Appearance.Lightweight" OnClick="ShowMaterialDefinitionsDialogAsync">Material Definitions</FluentButton>
-        <FluentButton Class="tab-button" IconStart="@(new Icons.Regular.Size16.ArrowSwap())" Appearance="Appearance.Lightweight">Material Loading</FluentButton>
-        <FluentButton Class="tab-button" IconStart="@(new Icons.Regular.Size16.Settings())" Appearance="Appearance.Lightweight">Options</FluentButton>
-        <FluentButton Class="tab-button" IconStart="@(new Icons.Regular.Size16.VehicleTruck())" Appearance="Appearance.Lightweight">Vehicles</FluentButton>
+        <FluentButton Class="tab-button" IconStart="@(new Icons.Regular.Size16.ArrowSwap())" Appearance="Appearance.Lightweight" OnClick="ShowMaterialLoadingDialogAsync">Material Loading</FluentButton>
+        <FluentButton Class="tab-button" IconStart="@(new Icons.Regular.Size16.Settings())" Appearance="Appearance.Lightweight" Disabled="true">Options</FluentButton>
+        <FluentButton Class="tab-button" IconStart="@(new Icons.Regular.Size16.VehicleTruck())" Appearance="Appearance.Lightweight" Disabled="true">Vehicles</FluentButton>
     </FluentStack>
 </FluentTab>
 
@@ -18,7 +18,8 @@
     private Material DialogData = new Material() {
         AggregateForCreation = new AggregateForCreation(),
         BitumenForCreation = new BitumenForCreation(),
-        FillerForCreation = new FillerForCreation()
+        FillerForCreation = new FillerForCreation(),
+        AdditiveForCreation = new AdditiveForCreation()
     };
 
     private async Task ShowMaterialDefinitionsDialogAsync()
@@ -33,10 +34,25 @@
         });
     }
 
+    private async Task ShowMaterialLoadingDialogAsync()
+    {
+        var dialog = await DialogService.ShowDialogAsync(DialogHelper.From<MaterialLoadingDialog>(), DialogData, new DialogParameters()
+        {
+            Height = "800px",
+            Width = "930px",
+            Title = "Material Loading",
+            PreventDismissOnOverlayClick = true,
+            PreventScroll = true,
+            PrimaryAction = null,
+            SecondaryAction = "Close"
+        });
+    }
+
     public class Material()
     {
         public AggregateForCreation? AggregateForCreation { get; set; }
         public BitumenForCreation? BitumenForCreation { get; set; }
         public FillerForCreation? FillerForCreation { get; set; }
+        public AdditiveForCreation? AdditiveForCreation { get; set; }
     }
 }

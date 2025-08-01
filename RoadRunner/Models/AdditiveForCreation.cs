@@ -1,0 +1,14 @@
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace RoadRunner.Models;
+public class AdditiveForCreation
+{
+    [Range(1, int.MaxValue, ErrorMessage = "Material number is required and must be between 1001 and 1010.")]
+    public string? MaterialNumber { get; set; }
+
+    [Required(ErrorMessage = "Additive name is required.")]
+    [MaxLength(60, ErrorMessage = "Additive name cannot exceed 60 characters.")]
+    public string Name { get; set; } = string.Empty;
+
+    public int? AdditiveTankId { get; set; }
+}

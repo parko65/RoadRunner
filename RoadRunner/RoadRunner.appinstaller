@@ -6,7 +6,7 @@
 	<MainPackage
 		Name="Hesler.Automation.RoadRunner"
 		Publisher="CN=David Parkes, O=Hesler Automation"
-		Version="1.0.18.0"
+		Version="1.0.19.0"
 		ProcessorArchitecture="x64"
 		Uri="https://github.com/parko65/RoadRunner/releases/latest/download/AutoUpdate.msix"/>
 	<UpdateSettings>

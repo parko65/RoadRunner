@@ -35,6 +35,8 @@ public partial class Home : IDisposable
     private bool DeferredLoading = false;
     private string? activeId = "overview";
 
+    private Microsoft.FluentUI.AspNetCore.Components.Color lampColor = Microsoft.FluentUI.AspNetCore.Components.Color.Error;
+
     FluentTab? changedto;
 
     protected override void OnInitialized()
@@ -122,11 +124,44 @@ public partial class Home : IDisposable
         activeId = tab.Id;
     }
 
+    private void HandleRowClick(FluentDataGridRow<JobModel> row)
+    {
+        _selectedJob = row.Item;
+
+        //// Since we now have a selected aggregate, we can populate the AggregateForCreation for editing but we need to parse the MaterialNumber to string
+        //AggregateForCreation.MaterialNumber = _selectedAggregate!.MaterialNumber.ToString();
+        //AggregateForCreation.Name = _selectedAggregate.Name;
+
+        //editMode = true;
+    }
+
+    private string GetRowClass(JobModel job)
+    {
+        return _selectedJob != null && _selectedJob.Id == job.Id ? "selected-row" : string.Empty;
+    }
+
     private void EnsureSelected()
     {
         if (_recipes.Count > 0 && _selectedRecipe == null)
         {
             _selectedRecipe = _recipes[0];
+        }
+    }
+
+    private async Task StartMixingAsync()
+    {
+        var isMixerReady = await _service.PLCService.CheckMixerReadyAsync();
+        if (isMixerReady)
+        {
+            // Logic to start mixing
+            lampColor = Microsoft.FluentUI.AspNetCore.Components.Color.Success;
+
+        }
+        else
+        {
+            // Handle the case where the mixer is not ready
+            // For example, show a message to the user
+            lampColor = Microsoft.FluentUI.AspNetCore.Components.Color.Error;
         }
     }
 

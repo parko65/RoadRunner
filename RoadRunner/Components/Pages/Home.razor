@@ -20,7 +20,7 @@
 
 <FluentGrid AdaptiveRendering="true">
     <FluentGridItem xs="12">
-        <FluentDataGrid Items="_jobs" TGridItem="JobModel" ShowHover="true">
+        <FluentDataGrid Items="_jobs" TGridItem="JobModel" ShowHover="true" OnRowClick="HandleRowClick" RowClass="GetRowClass">
             <PropertyColumn Property="@(j => j.JobNumber)" Title="Number" />
             <PropertyColumn Property="@(j => j.Recipe!.Name)" Title="Recipe" />
             <PropertyColumn Property="@(j => j.Destination!.Name)" Title="Destination" />
@@ -29,6 +29,18 @@
             <PropertyColumn Property="@(j => j.Tonnage)" Title="Tonnage" />
         </FluentDataGrid>
     </FluentGridItem>
+
+    <!-- Action Buttons -->
+    <FluentGridItem xs="12" Justify="JustifyContent.Center" Gap="36px">
+        <FluentButton Appearance="Appearance.Outline" Disabled="true">
+            <FluentIcon Value="@(new Icons.Regular.Size16.Delete())" Color="Color.Error" Slot="start" />
+            Delete Job
+        </FluentButton>
+        <FluentButton IconStart="@(new Icons.Regular.Size16.ArrowSync())" Appearance="Appearance.Outline" OnClick="StartMixingAsync">Start Mixing</FluentButton>
+        <FluentIcon Value="@(new Icons.Filled.Size24.Alert())" Color="@lampColor" />
+    </FluentGridItem>
+    <!-- End Action Buttons-->
+
     <FluentGridItem xs="3">
         <FluentLabel Typo="Typography.Header" Style="margin-bottom: 8px;">Recipes</FluentLabel>
         <FluentListbox TOption="RecipeModel"
@@ -43,18 +55,17 @@
     </FluentGridItem>
     <FluentGridItem xs="4">
         <FluentLabel Typo="Typography.Header" Style="margin-bottom: 8px;">Job Details</FluentLabel>
-        
 
         <EditForm EditContext="_editContext" OnValidSubmit="HandleValidSubmit">
             <DataAnnotationsValidator />
 
             <FluentSelect Items="_destinations" TOption="DestinationModel"
-                OptionText="@(d => d.Name)"
-                OptionValue="@(d => d.Id.ToString())"                
-                @bind-Value="_jobForCreation.DestinationId"                
+                          OptionText="@(d => d.Name)"
+                          OptionValue="@(d => d.Id.ToString())"
+                          @bind-Value="_jobForCreation.DestinationId"
                           Placeholder="Select destination..." />
 
-            <FluentStack Orientation="Orientation.Vertical">                
+            <FluentStack Orientation="Orientation.Vertical">
                 <div>
                     <FluentTextField @bind-Value="_jobForCreation.JobNumber" Label="Job Number" Required="true" AutoComplete="off" />
                 </div>

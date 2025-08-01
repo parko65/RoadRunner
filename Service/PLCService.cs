@@ -34,6 +34,14 @@ internal sealed class PLCService : IPLCService
         }        
     }
 
+    public async Task SendMixingDataAsync()
+    {
+        var plcConfig = _plcMonitor.CurrentValue;
+
+        // Delete this line if you don't want to read the value
+        var result = await ReadSingleValueAsync($"{plcConfig.PLCStatusBlock!.StatusReadBlock}[{plcConfig.PLCStatusBlock.StatusReadStart}]");
+    }
+
     private Tag<IntPlcMapper, short[]> CreateTag(string tagName, int arrayLength)
     {
         var plcConfig = _plcMonitor.CurrentValue;
