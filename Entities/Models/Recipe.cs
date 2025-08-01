@@ -34,4 +34,5 @@ public class Recipe
 
     public ICollection<Job>? Jobs { get; set; }
     public ICollection<RecipeHotBin>? RecipeHotBins { get; set; }
+    public ICollection<RecipeBitumenTank>? RecipeBitumenTanks { get; set; }
 }

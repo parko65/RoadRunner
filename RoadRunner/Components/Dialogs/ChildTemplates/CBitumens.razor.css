@@ -1,0 +1,8 @@
+﻿.hidden-buttons {
+    opacity: 0;
+    transition: opacity 0.5s;
+}
+
+.fluent-data-grid-row:hover .hidden-buttons {
+    opacity: 1;
+}

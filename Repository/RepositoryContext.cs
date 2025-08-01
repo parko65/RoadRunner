@@ -16,9 +16,12 @@ public class RepositoryContext : DbContext
         modelBuilder.Entity<RecipeHotBin>()
             .HasKey(rh => new { rh.RecipeId, rh.HotBinId });
 
+        modelBuilder.Entity<RecipeBitumenTank>()
+            .HasKey(rb => new { rb.RecipeId, rb.BitumenTankId });
+
         modelBuilder.ApplyConfiguration(new DestinationConfiguration());
     }
-    
+
     // DbSet properties for your entities
     public DbSet<Recipe> Recipes { get; set; }
     public DbSet<Job> Jobs { get; set; }
@@ -26,4 +29,7 @@ public class RepositoryContext : DbContext
     public DbSet<HotBin> HotBins { get; set; }
     public DbSet<RecipeHotBin> RecipeHotBins { get; set; }
     public DbSet<Destination> Destinations { get; set; }
+    public DbSet<RecipeBitumenTank> RecipeBitumenTanks { get; set; }
+    public DbSet<BitumenTank> BitumenTanks { get; set; }
+    public DbSet<Bitumen> Bitumens { get; set; }
 }

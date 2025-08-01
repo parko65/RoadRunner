@@ -5,5 +5,6 @@ public interface IRepositoryManager
     IJobRepository Job { get; }
     IAggregateRepository Aggregate { get; }
     IDestinationRepository Destination { get; }
+    IBitumenRepository Bitumen { get; }
     Task SaveAsync();
 }

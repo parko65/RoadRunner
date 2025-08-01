@@ -5,5 +5,6 @@ public interface IServiceManager
     IJobService JobService { get; }
     IAggregateService AggregateService { get; }
     IDestinationService DestinationService { get; }
+    IBitumenService BitumenService { get; }
     IPLCService PLCService { get; }
 }

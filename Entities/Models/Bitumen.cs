@@ -1,14 +1,19 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace RoadRunner.Models;
-public class BitumenForCreation
+namespace Entities.Models;
+public class Bitumen
 {
-    [Range(1, int.MaxValue, ErrorMessage = "Material number is required and must be between 1001 and 1010.")]
-    public string? MaterialNumber { get; set; }
+    [Column("BitumenId")]
+    public int Id { get; set; }
+
+    public int MaterialNumber { get; set; }
 
     [Required(ErrorMessage = "Bitumen name is required.")]
     [MaxLength(60, ErrorMessage = "Bitumen name cannot exceed 60 characters.")]
     public string Name { get; set; } = string.Empty;
 
+    [ForeignKey(nameof(BitumenTank))]
     public int? BitumenTankId { get; set; }
+    public BitumenTank? BitumenTank { get; set; }
 }

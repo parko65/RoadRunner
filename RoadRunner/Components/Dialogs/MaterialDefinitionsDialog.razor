@@ -30,7 +30,7 @@
                 <FluentButton Class="dialog-tab-button"
                               IconStart="@(new Icons.Regular.Size16.DocumentEdit())"
                               Appearance="Appearance.Outline"
-                              OnClick="ShowBit">
+                              OnClick="ShowBitumen">
                     Bitumen
                 </FluentButton>
             </FluentGridItem>
@@ -152,8 +152,8 @@
     }
 
     private void ShowAggregates() => currentContent = CreateComponent<CAggregates>(new() { ["AggregateForCreation"] = Content!.AggregateForCreation! });
-    private void ShowBit() => currentContent = CreateComponent<BitumenDataGrid>();
-    private void ShowFiller() => currentContent = CreateComponent<FillersDataGrid>(new() { ["Title"] = "Fuck you" });
+    private void ShowBitumen() => currentContent = CreateComponent<CBitumens>(new() { ["BitumenForCreation"] = Content!.BitumenForCreation! });
+    private void ShowFiller() => currentContent = CreateComponent<FillersDataGrid>(new() { ["Title"] = "Under Construction" });
     private void ShowReturnDust() => currentContent = CreateComponent<ReturnDustDataGrid>();
     private void ShowColdFeed() => currentContent = CreateComponent<ColdfeedDataGrid>();
     private void ShowAdditives() => currentContent = CreateComponent<CAdditives>();

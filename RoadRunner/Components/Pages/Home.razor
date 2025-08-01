@@ -43,13 +43,18 @@
     </FluentGridItem>
     <FluentGridItem xs="4">
         <FluentLabel Typo="Typography.Header" Style="margin-bottom: 8px;">Job Details</FluentLabel>
-        <FluentSelect Items="_destinations" TOption="DestinationModel" OptionText="@(d => d.Name)" @bind-SelectedOption="_selectedDestination"
-                      Placeholder="Select destination..." />
+        
 
         <EditForm EditContext="_editContext" OnValidSubmit="HandleValidSubmit">
             <DataAnnotationsValidator />
 
-            <FluentStack Orientation="Orientation.Vertical">
+            <FluentSelect Items="_destinations" TOption="DestinationModel"
+                OptionText="@(d => d.Name)"
+                OptionValue="@(d => d.Id.ToString())"                
+                @bind-Value="_jobForCreation.DestinationId"                
+                          Placeholder="Select destination..." />
+
+            <FluentStack Orientation="Orientation.Vertical">                
                 <div>
                     <FluentTextField @bind-Value="_jobForCreation.JobNumber" Label="Job Number" Required="true" AutoComplete="off" />
                 </div>

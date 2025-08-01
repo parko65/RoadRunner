@@ -8,6 +8,9 @@ public class JobForCreation
 
     [Range(0.5, 320, ErrorMessage = "Job tonnage must be between 0.5 and 320")]
     public string Tonnage { get; set; } = "0.0";
+    
     public int RecipeId { get; set; }
-    public int DestinationId { get; set; }
+
+    [Required(ErrorMessage = "Destination ID is required")]
+    public string DestinationId { get; set; } = string.Empty;
 }

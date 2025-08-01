@@ -17,6 +17,11 @@ public class MappingProfile : Profile
         CreateMap<AggregateDto, AggregateModel>();
         CreateMap<AggregateForCreation, AggregateForCreationDto>();
 
+        CreateMap<Bitumen, BitumenDto>();
+        CreateMap<BitumenForCreationDto, Bitumen>();
+        CreateMap<BitumenDto, BitumenModel>();
+        CreateMap<BitumenForCreation, BitumenForCreationDto>();
+
         CreateMap<Job, JobDto>();
         CreateMap<JobForCreationDto, Job>();
         CreateMap<JobDto, JobModel>();

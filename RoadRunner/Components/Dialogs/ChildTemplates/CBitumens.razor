@@ -1,0 +1,153 @@
+﻿@using AutoMapper
+@using RoadRunner.Models
+@using Service.Contracts
+@using Shared.DataTransferObjects
+@implements IDisposable
+
+<div style="height: 230px; overflow-y: scroll;">
+    <FluentDataGrid Items="_bitumens" TGridItem="BitumenModel" OnRowClick="HandleRowClick" RowClass="GetRowClass" GridTemplateColumns="0.2fr 0.5fr" ShowHover="true">
+        <PropertyColumn Property="@(a => a.MaterialNumber)" Title="Number" />
+        <PropertyColumn Property="@(a => a.Name)" Title="Name" />
+        <TemplateColumn>
+            <div class="hidden-buttons">
+                <FluentAnchor Href="#" Appearance="Appearance.Hypertext" IconStart="@(new Icons.Regular.Size16.Delete())" OnClick="@(async () => await DeleteAsync(context))" />
+            </div>
+        </TemplateColumn>
+    </FluentDataGrid>
+</div>
+
+<EditForm EditContext="_editContext" OnValidSubmit="HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <FluentStack>
+        <div>
+            <FluentTextField @bind-Value="BitumenForCreation.MaterialNumber"
+                             Label="Number"
+                             Required="true"
+                             Placeholder="Enter bitumen number" AutoComplete="off" />
+        </div>
+        <div>
+            <FluentTextField @bind-Value="BitumenForCreation.Name"
+                             Label="Name"
+                             Required="true"
+                             Placeholder="Enter bitumen name" AutoComplete="off" />
+        </div>
+    </FluentStack>
+
+    <div style="margin-top: 12px;">
+        <FluentStack>
+            <FluentButton Type="ButtonType.Submit" IconStart="@(new Icons.Regular.Size16.Save())"
+                          Appearance="Appearance.Outline" Disabled="formInvalid">
+                Create
+            </FluentButton>
+            <FluentButton IconStart="@(new Icons.Regular.Size16.Edit())"
+                          Appearance="Appearance.Outline" Disabled="!editMode">
+                Save Edits
+            </FluentButton>
+        </FluentStack>
+    </div>
+
+</EditForm>
+
+@code {
+    [Parameter]
+    public BitumenForCreation BitumenForCreation { get; set; } = default!;
+
+    [Inject]
+    public IServiceManager Service { get; set; } = default!;
+
+    [Inject]
+    public IMapper Mapper { get; set; } = default!;
+
+    private IQueryable<BitumenModel>? _bitumens;
+
+    private BitumenModel? _selectedBitumen { get; set; }
+
+    private EditContext _editContext = default!;
+    private bool formInvalid = true;
+    private bool editMode = false;
+
+    protected override void OnInitialized()
+    {
+        _editContext = new EditContext(BitumenForCreation);
+        _editContext.OnFieldChanged += HandleFieldChanged;
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadBitumensAsync();
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        var bitumen = Mapper.Map<BitumenForCreationDto>(BitumenForCreation);
+        var created = await Service.BitumenService.CreateBitumenAsync(bitumen);
+
+        await LoadBitumensAsync();
+
+        BitumenForCreation = new BitumenForCreation();
+
+        _editContext = new EditContext(BitumenForCreation);
+        _editContext.OnValidationStateChanged += ValidationChanged;
+        _editContext.NotifyValidationStateChanged();
+    }
+
+    private void HandleFieldChanged(object? sender, FieldChangedEventArgs e)
+    {
+        // Handle field changes if necessary
+        formInvalid = !_editContext.Validate();
+        StateHasChanged();
+    }
+
+    private void ValidationChanged(object? sender, ValidationStateChangedEventArgs e)
+    {
+        formInvalid = true;
+        _editContext.OnFieldChanged -= HandleFieldChanged;
+        BitumenForCreation = new BitumenForCreation();
+        _editContext = new EditContext(BitumenForCreation);
+        _editContext.OnFieldChanged += HandleFieldChanged;
+        _editContext.OnValidationStateChanged -= ValidationChanged;
+    }
+
+    private async Task LoadBitumensAsync()
+    {
+        var bitumens = await Service.BitumenService.GetBitumensAsync(trackChanges: false);
+
+        if (bitumens is not null)
+        {
+            var bits = Mapper.Map<List<BitumenModel>>(bitumens);
+
+            _bitumens = bits.AsQueryable();
+        }
+    }
+
+    private void HandleRowClick(FluentDataGridRow<BitumenModel> row)
+    {
+        _selectedBitumen = row.Item;
+
+        // Since we now have a selected bitumen, we can populate the BitumenForCreation for editing but we need to parse the MaterialNumber to string
+        BitumenForCreation.MaterialNumber = _selectedBitumen!.MaterialNumber.ToString();
+        BitumenForCreation.Name = _selectedBitumen.Name;
+
+        editMode = true;
+    }
+
+    private string GetRowClass(BitumenModel bitumen)
+    {
+        return _selectedBitumen != null && _selectedBitumen.Id == bitumen.Id ? "selected-row" : string.Empty;
+    }
+
+    private async Task DeleteAsync(BitumenModel bitumen)
+    {
+        await Service.BitumenService.DeleteBitumenAsync(bitumen.Id, trackChanges: false);
+
+        BitumenForCreation = new BitumenForCreation();
+
+        await LoadBitumensAsync();
+    }
+
+    public void Dispose()
+    {
+        _editContext.OnFieldChanged -= HandleFieldChanged;
+        _editContext.OnValidationStateChanged -= ValidationChanged;
+    }
+}

@@ -18,11 +18,10 @@ public partial class Home : IDisposable
         _mapper = mapper;
     }
 
-    private List<RecipeModel> _recipes { get; set; } = new();
+    private List<RecipeModel> _recipes { get; set; } = [];
     private RecipeModel? _selectedRecipe;
 
-    private List<DestinationModel> _destinations { get; set; } = new();
-    private DestinationModel? _selectedDestination;
+    private List<DestinationModel> _destinations { get; set; } = [];    
 
     private IQueryable<JobModel>? _jobs;
     private JobModel? _selectedJob;
@@ -85,10 +84,6 @@ public partial class Home : IDisposable
     {
         if (_selectedRecipe is not null)
             _jobForCreation.RecipeId = _selectedRecipe.Id;
-        
-
-        if (_selectedDestination is not null)
-            _jobForCreation.DestinationId = _selectedDestination.Id;        
 
         var job = _mapper.Map<JobForCreationDto>(_jobForCreation);        
         var createdJob = await _service.JobService.CreateJobAsync(job);
@@ -98,12 +93,12 @@ public partial class Home : IDisposable
         _editContext = new EditContext(_jobForCreation);
         _editContext.OnValidationStateChanged += ValidationChanged;
         _editContext.NotifyValidationStateChanged();
-    }
+    }    
 
     private void HandleFieldChanged(object? sender, FieldChangedEventArgs e)
     {
         // Handle field changes if necessary
-        formInvalid = !_editContext.Validate() || _selectedDestination == null || _selectedRecipe == null;
+        formInvalid = !_editContext.Validate();
         StateHasChanged();
     }
 
